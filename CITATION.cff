@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this benchmark or code, please cite the accompanying manuscript and this archive."
+title: "SubsurfaceReliability v1.0: Flux blindness in neural solvers for heterogeneous subsurface flow"
+authors:
+  - family-names: Deng
+    given-names: Zijie
+    orcid: "https://orcid.org/0009-0002-4824-9764"
+    affiliation: "Jiangxi Provincial Key Laboratory of Water Resources Allocation and Efficient Utilization, Jiangxi University of Water Resources and Electric Power"
+  - family-names: Liao
+    given-names: Zhenyu
+    affiliation: "School of Geography and Environment, Jiangxi Normal University"
+  - family-names: Yu
+    given-names: Jiyang
+    affiliation: "Jiangxi Provincial Key Laboratory of Water Resources Allocation and Efficient Utilization, Jiangxi University of Water Resources and Electric Power"
+version: 1.0.0
+repository-code: "https://github.com/yuelangmanle/SubsurfaceReliability"
+date-released: "2026-11-06"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Flux blindness in neural solvers for heterogeneous subsurface flow: Spectral mechanisms, pre-training screening, and flux-informed learning"
+  journal: "Computers & Geosciences"
+  year: 2026
+  authors:
+    - family-names: Deng
+      given-names: Zijie
+    - family-names: Liao
+      given-names: Zhenyu
+    - family-names: Yu
+      given-names: Jiyang
+abstract: "Band-limited lognormal heterogeneity atlas (24 regimes, 1,536 held-out realizations, 3,264 evaluations), MMS-verified TPFA finite-volume reference solver, U-Net/FNO/PINN solver families, pre-training roughness screening rules, two-batch off-grid blind validation (12 regimes), multi-seed stability controls, Pollock streamline transport evaluation, and one-cycle AMG a posteriori diagnostics and defect correction."

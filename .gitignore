@@ -1,0 +1,35 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Large binary data and checkpoints (archived separately via build_archive_bundle.py)
+data/*.h5
+runs/**/*.pt
+runs/**/*.pth
+runs/**/*.running
+runs/**/*.log
+*.tmp
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.spl
+paper/*.synctex.gz
+
+# OS metadata
+.DS_Store
