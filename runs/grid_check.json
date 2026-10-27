@@ -1,0 +1,29 @@
+{
+ "note": "same realization re-solved at 256^2 (log K interpolated); relative L2 change of conservative interior face fluxes",
+ "cases": [
+  {
+   "cov": "gauss",
+   "sigma2": 4.0,
+   "lam": 0.02,
+   "face_flux_rel_change_128_to_256": 0.061
+  },
+  {
+   "cov": "gauss",
+   "sigma2": 1.0,
+   "lam": 0.03,
+   "face_flux_rel_change_128_to_256": 0.0129
+  },
+  {
+   "cov": "gauss",
+   "sigma2": 0.5,
+   "lam": 0.2,
+   "face_flux_rel_change_128_to_256": 0.0003
+  },
+  {
+   "cov": "m05",
+   "sigma2": 2.0,
+   "lam": 0.03,
+   "face_flux_rel_change_128_to_256": 0.092
+  }
+ ]
+}

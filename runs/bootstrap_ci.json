@@ -1,0 +1,27 @@
+{
+ "n_boot": 1000,
+ "statistic": "instance-level AUC of the family's primary descriptor (unet sigma^2/lambda, fno sigma^2, pinn sigma^2/lambda^2)",
+ "resample_unit": "regime (cell), 24 regimes with replacement",
+ "seed": 12345,
+ "unet": {
+  "point": 0.9555,
+  "ci95": [
+   0.8869,
+   0.98
+  ]
+ },
+ "fno": {
+  "point": 0.9152,
+  "ci95": [
+   0.8443,
+   0.9529
+  ]
+ },
+ "pinn": {
+  "point": 0.9376,
+  "ci95": [
+   0.8654,
+   0.9788
+  ]
+ }
+}

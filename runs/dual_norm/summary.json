@@ -1,0 +1,24 @@
+{
+ "models": {
+  "unet": {
+   "n": 1536,
+   "fail_rate_primary": 0.914062,
+   "fail_rate_joint": 0.86263,
+   "median_primary": 2.7509,
+   "median_joint": 2.4357,
+   "label_disagreement": 79,
+   "max_reproduction_deviation": 0.00034311,
+   "n_checked": 3072
+  },
+  "fno": {
+   "n": 1536,
+   "fail_rate_primary": 0.752604,
+   "fail_rate_joint": 0.69987,
+   "median_primary": 1.7105,
+   "median_joint": 1.6074,
+   "label_disagreement": 81,
+   "max_reproduction_deviation": 9.848e-05,
+   "n_checked": 3072
+  }
+ }
+}

@@ -1,0 +1,1 @@
+{"model": "pinn+RAR", "inst": 289, "sigma2": 4.0, "lam": 0.08, "n": 128, "head_err": 0.7238073945045471, "flux_err": 1.5839786529541016, "adam_seconds": 741.2, "cfg": {"width": 64, "depth": 4, "m_colloc": 16384, "m_bc": 1024, "adam_iters": 10000, "lr": 0.001, "lbfgs_iters": 500, "rar_every": 500, "rar_frac": 0.2, "seed": 0}}

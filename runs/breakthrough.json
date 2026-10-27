@@ -1,0 +1,1877 @@
+{
+ "n_particles": 41,
+ "instances": [
+  288,
+  296,
+  304,
+  312,
+  320,
+  328,
+  336,
+  344
+ ],
+ "tracker": "pollock-2d-v2: two-coordinate analytic advance, relative flatness, full-y domain",
+ "cells": {
+  "s1_l0.05_n128": {
+   "288": {
+    "flux_err": {
+     "unet": 2.4919,
+     "fno_head": 2.2205,
+     "fno_flux": 0.668
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0597,
+     "fno_head": 0.0537,
+     "fno_flux": 0.0533
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.073,
+      "t_q05_arrived": 0.777,
+      "t_q95_arrived": 2.1306,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0735,
+      "y_exit_q95": 0.9366,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 20,
+       "stalled": 21
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 19,
+      "fates": {
+       "arrived": 19,
+       "stalled": 22
+      },
+      "n_paired_arrived": 19,
+      "median_paired_ratio": 0.9842,
+      "t_median_arrived": 0.965,
+      "t_q05_arrived": 0.6469,
+      "t_q95_arrived": 1.2544,
+      "median_ratio_arrived_vs_ref": 0.8993,
+      "y_exit_q05": 0.025,
+      "y_exit_q95": 0.5609,
+      "tmax": 50.0
+     }
+    }
+   },
+   "296": {
+    "flux_err": {
+     "unet": 2.0677,
+     "fno_head": 1.6364,
+     "fno_flux": 0.4241
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0595,
+     "fno_head": 0.0402,
+     "fno_flux": 0.0359
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9756,
+      "t_q05_arrived": 0.6427,
+      "t_q95_arrived": 1.6479,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0325,
+      "y_exit_q95": 0.8288,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 18,
+       "stalled": 23
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 29,
+      "fates": {
+       "arrived": 29,
+       "backwashed": 12
+      },
+      "n_paired_arrived": 29,
+      "median_paired_ratio": 0.9722,
+      "t_median_arrived": 1.0394,
+      "t_q05_arrived": 0.6377,
+      "t_q95_arrived": 1.4782,
+      "median_ratio_arrived_vs_ref": 1.0654,
+      "y_exit_q05": 0.0954,
+      "y_exit_q95": 0.6993,
+      "tmax": 50.0
+     }
+    }
+   },
+   "304": {
+    "flux_err": {
+     "unet": 1.4031,
+     "fno_head": 1.2847,
+     "fno_flux": 0.4169
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0491,
+     "fno_head": 0.0522,
+     "fno_flux": 0.0403
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.0298,
+      "t_q05_arrived": 0.557,
+      "t_q95_arrived": 1.926,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.1444,
+      "y_exit_q95": 0.8992,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 17,
+       "stalled": 24
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0162,
+      "t_median_arrived": 0.9882,
+      "t_q05_arrived": 0.627,
+      "t_q95_arrived": 2.8908,
+      "median_ratio_arrived_vs_ref": 0.9596,
+      "y_exit_q05": 0.2615,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "312": {
+    "flux_err": {
+     "unet": 1.7341,
+     "fno_head": 1.2175,
+     "fno_flux": 0.4829
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0518,
+     "fno_head": 0.0357,
+     "fno_flux": 0.0368
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9077,
+      "t_q05_arrived": 0.5003,
+      "t_q95_arrived": 2.8882,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0657,
+      "y_exit_q95": 0.9184,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 15,
+       "stalled": 26
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0078,
+      "t_median_arrived": 0.9512,
+      "t_q05_arrived": 0.5715,
+      "t_q95_arrived": 2.2484,
+      "median_ratio_arrived_vs_ref": 1.0479,
+      "y_exit_q05": 0.0813,
+      "y_exit_q95": 0.7958,
+      "tmax": 50.0
+     }
+    }
+   },
+   "320": {
+    "flux_err": {
+     "unet": 1.6212,
+     "fno_head": 1.5903,
+     "fno_flux": 0.4325
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0433,
+     "fno_head": 0.0473,
+     "fno_flux": 0.0443
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9111,
+      "t_q05_arrived": 0.5427,
+      "t_q95_arrived": 1.6141,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0124,
+      "y_exit_q95": 0.9608,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 21,
+       "stalled": 20
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 0.9912,
+      "t_median_arrived": 0.9801,
+      "t_q05_arrived": 0.5027,
+      "t_q95_arrived": 1.718,
+      "median_ratio_arrived_vs_ref": 1.0757,
+      "y_exit_q05": 0.0075,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "328": {
+    "flux_err": {
+     "unet": 2.0678,
+     "fno_head": 1.3648,
+     "fno_flux": 0.6394
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0406,
+     "fno_head": 0.059,
+     "fno_flux": 0.0525
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.3683,
+      "t_q05_arrived": 0.5346,
+      "t_q95_arrived": 2.0257,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0395,
+      "y_exit_q95": 0.979,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 11,
+       "stalled": 30
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 3,
+       "stalled": 38
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 38,
+       "stalled": 3
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     }
+    }
+   },
+   "336": {
+    "flux_err": {
+     "unet": 2.961,
+     "fno_head": 1.3845,
+     "fno_flux": 0.6561
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0583,
+     "fno_head": 0.0633,
+     "fno_flux": 0.0529
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9772,
+      "t_q05_arrived": 0.6197,
+      "t_q95_arrived": 2.0828,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0293,
+      "y_exit_q95": 0.9749,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 4,
+       "stalled": 37
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 21,
+      "fates": {
+       "arrived": 21,
+       "stalled": 20
+      },
+      "n_paired_arrived": 21,
+      "median_paired_ratio": 1.2039,
+      "t_median_arrived": 1.8764,
+      "t_q05_arrived": 0.96,
+      "t_q95_arrived": 3.1791,
+      "median_ratio_arrived_vs_ref": 1.9202,
+      "y_exit_q05": 0.3339,
+      "y_exit_q95": 0.7269,
+      "tmax": 50.0
+     }
+    }
+   },
+   "344": {
+    "flux_err": {
+     "unet": 2.1409,
+     "fno_head": 1.5921,
+     "fno_flux": 0.8168
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0509,
+     "fno_head": 0.0993,
+     "fno_flux": 0.0927
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.0487,
+      "t_q05_arrived": 0.6512,
+      "t_q95_arrived": 1.6292,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0325,
+      "y_exit_q95": 0.9561,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 13,
+       "stalled": 28
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 36,
+       "stalled": 5
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     }
+    }
+   }
+  },
+  "s2_l0.03_n128": {
+   "288": {
+    "flux_err": {
+     "unet": 12.6323,
+     "fno_head": 4.9102,
+     "fno_flux": 1.6425
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0564,
+     "fno_head": 0.0469,
+     "fno_flux": 0.0478
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.919,
+      "t_q05_arrived": 0.6011,
+      "t_q95_arrived": 2.2281,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.1181,
+      "y_exit_q95": 0.9234,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 8,
+       "stalled": 33
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 4,
+      "fates": {
+       "arrived": 4,
+       "backwashed": 19,
+       "stalled": 18
+      },
+      "n_paired_arrived": 4,
+      "median_paired_ratio": 1.8176,
+      "t_median_arrived": 1.4293,
+      "t_q05_arrived": 1.197,
+      "t_q95_arrived": 1.6335,
+      "median_ratio_arrived_vs_ref": 1.5552,
+      "y_exit_q05": 0.7749,
+      "y_exit_q95": 0.9665,
+      "tmax": 50.0
+     }
+    }
+   },
+   "296": {
+    "flux_err": {
+     "unet": 5.5517,
+     "fno_head": 5.0373,
+     "fno_flux": 1.4184
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0721,
+     "fno_head": 0.0675,
+     "fno_flux": 0.0702
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.198,
+      "t_q05_arrived": 0.6575,
+      "t_q95_arrived": 1.9944,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.04,
+      "y_exit_q95": 0.8473,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 17,
+       "stalled": 24
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 19,
+       "stalled": 22
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 28,
+       "stalled": 13
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     }
+    }
+   },
+   "304": {
+    "flux_err": {
+     "unet": 7.273,
+     "fno_head": 5.5797,
+     "fno_flux": 1.5803
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0512,
+     "fno_head": 0.0586,
+     "fno_flux": 0.0604
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.7789,
+      "t_q05_arrived": 0.5433,
+      "t_q95_arrived": 1.3811,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0498,
+      "y_exit_q95": 0.8885,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 9,
+       "stalled": 32
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 20,
+      "fates": {
+       "arrived": 20,
+       "backwashed": 11,
+       "stalled": 10
+      },
+      "n_paired_arrived": 20,
+      "median_paired_ratio": 1.8521,
+      "t_median_arrived": 1.8183,
+      "t_q05_arrived": 0.8665,
+      "t_q95_arrived": 2.7953,
+      "median_ratio_arrived_vs_ref": 2.3345,
+      "y_exit_q05": 0.4467,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "312": {
+    "flux_err": {
+     "unet": 5.0474,
+     "fno_head": 3.2264,
+     "fno_flux": 1.2442
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0465,
+     "fno_head": 0.04,
+     "fno_flux": 0.0437
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9841,
+      "t_q05_arrived": 0.5323,
+      "t_q95_arrived": 2.3306,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.1137,
+      "y_exit_q95": 0.9117,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 11,
+       "stalled": 30
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 10,
+      "fates": {
+       "arrived": 10,
+       "backwashed": 22,
+       "stalled": 9
+      },
+      "n_paired_arrived": 10,
+      "median_paired_ratio": 5.7614,
+      "t_median_arrived": 3.7325,
+      "t_q05_arrived": 1.4055,
+      "t_q95_arrived": 4.0362,
+      "median_ratio_arrived_vs_ref": 3.7926,
+      "y_exit_q05": 0.2112,
+      "y_exit_q95": 0.9998,
+      "tmax": 50.0
+     }
+    }
+   },
+   "320": {
+    "flux_err": {
+     "unet": 8.2999,
+     "fno_head": 6.2251,
+     "fno_flux": 1.5964
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.059,
+     "fno_head": 0.0394,
+     "fno_flux": 0.066
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.1626,
+      "t_q05_arrived": 0.7954,
+      "t_q95_arrived": 1.5821,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0874,
+      "y_exit_q95": 0.8752,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 12,
+       "stalled": 29
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 7,
+      "fates": {
+       "arrived": 7,
+       "backwashed": 17,
+       "stalled": 17
+      },
+      "n_paired_arrived": 7,
+      "median_paired_ratio": 1.4467,
+      "t_median_arrived": 1.7732,
+      "t_q05_arrived": 1.509,
+      "t_q95_arrived": 2.1408,
+      "median_ratio_arrived_vs_ref": 1.5252,
+      "y_exit_q05": 0.5295,
+      "y_exit_q95": 0.5295,
+      "tmax": 50.0
+     }
+    }
+   },
+   "328": {
+    "flux_err": {
+     "unet": 6.0625,
+     "fno_head": 4.41,
+     "fno_flux": 1.9246
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0454,
+     "fno_head": 0.0714,
+     "fno_flux": 0.0795
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9575,
+      "t_q05_arrived": 0.5147,
+      "t_q95_arrived": 2.4323,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.1542,
+      "y_exit_q95": 0.9577,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 6,
+       "stalled": 35
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 4,
+       "stalled": 37
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 2,
+      "fates": {
+       "arrived": 2,
+       "backwashed": 32,
+       "stalled": 7
+      },
+      "n_paired_arrived": 2,
+      "median_paired_ratio": 1.3028,
+      "t_median_arrived": 1.6607,
+      "t_q05_arrived": 1.1992,
+      "t_q95_arrived": 2.1221,
+      "median_ratio_arrived_vs_ref": 1.7344,
+      "y_exit_q05": 0.4733,
+      "y_exit_q95": 0.5194,
+      "tmax": 50.0
+     }
+    }
+   },
+   "336": {
+    "flux_err": {
+     "unet": 5.9222,
+     "fno_head": 4.2727,
+     "fno_flux": 1.6354
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0566,
+     "fno_head": 0.0604,
+     "fno_flux": 0.0721
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.0001,
+      "t_q05_arrived": 0.5389,
+      "t_q95_arrived": 1.6284,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.2097,
+      "y_exit_q95": 0.9037,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 16,
+       "stalled": 25
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 6,
+       "stalled": 35
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 27,
+       "stalled": 14
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     }
+    }
+   },
+   "344": {
+    "flux_err": {
+     "unet": 5.8312,
+     "fno_head": 4.7111,
+     "fno_flux": 1.5867
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0519,
+     "fno_head": 0.0577,
+     "fno_flux": 0.0701
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9402,
+      "t_q05_arrived": 0.6653,
+      "t_q95_arrived": 1.5247,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0434,
+      "y_exit_q95": 0.9199,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 7,
+       "stalled": 34
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 15,
+      "fates": {
+       "arrived": 15,
+       "backwashed": 5,
+       "stalled": 21
+      },
+      "n_paired_arrived": 15,
+      "median_paired_ratio": 2.1039,
+      "t_median_arrived": 2.0041,
+      "t_q05_arrived": 1.0994,
+      "t_q95_arrived": 3.5897,
+      "median_ratio_arrived_vs_ref": 2.1315,
+      "y_exit_q05": 0.5737,
+      "y_exit_q95": 0.8452,
+      "tmax": 50.0
+     }
+    }
+   }
+  },
+  "s0.5_l0.08_n128": {
+   "288": {
+    "flux_err": {
+     "unet": 0.9379,
+     "fno_head": 0.753,
+     "fno_flux": 0.2784
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0314,
+     "fno_head": 0.0239,
+     "fno_flux": 0.0196
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9182,
+      "t_q05_arrived": 0.5368,
+      "t_q95_arrived": 1.697,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0707,
+      "y_exit_q95": 0.9253,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 6,
+       "stalled": 35
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 12,
+       "stalled": 29
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 0.9782,
+      "t_median_arrived": 0.8328,
+      "t_q05_arrived": 0.5394,
+      "t_q95_arrived": 1.6267,
+      "median_ratio_arrived_vs_ref": 0.907,
+      "y_exit_q05": 0.0484,
+      "y_exit_q95": 0.9666,
+      "tmax": 50.0
+     }
+    }
+   },
+   "296": {
+    "flux_err": {
+     "unet": 0.9527,
+     "fno_head": 0.8665,
+     "fno_flux": 0.4846
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0496,
+     "fno_head": 0.0674,
+     "fno_flux": 0.0698
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.0253,
+      "t_q05_arrived": 0.6451,
+      "t_q95_arrived": 1.4415,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.1255,
+      "y_exit_q95": 0.9525,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 3,
+       "stalled": 38
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 21,
+      "fates": {
+       "arrived": 21,
+       "stalled": 20
+      },
+      "n_paired_arrived": 21,
+      "median_paired_ratio": 1.2288,
+      "t_median_arrived": 1.2675,
+      "t_q05_arrived": 0.9123,
+      "t_q95_arrived": 1.4389,
+      "median_ratio_arrived_vs_ref": 1.2362,
+      "y_exit_q05": 0.3814,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "304": {
+    "flux_err": {
+     "unet": 0.8492,
+     "fno_head": 0.7164,
+     "fno_flux": 0.2158
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0312,
+     "fno_head": 0.0383,
+     "fno_flux": 0.0363
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9044,
+      "t_q05_arrived": 0.6801,
+      "t_q95_arrived": 1.43,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0311,
+      "y_exit_q95": 0.9673,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 5,
+       "stalled": 36
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 1,
+       "stalled": 40
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 0.9657,
+      "t_median_arrived": 0.8576,
+      "t_q05_arrived": 0.7059,
+      "t_q95_arrived": 1.3364,
+      "median_ratio_arrived_vs_ref": 0.9483,
+      "y_exit_q05": 0.0541,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "312": {
+    "flux_err": {
+     "unet": 1.185,
+     "fno_head": 0.9881,
+     "fno_flux": 0.2545
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0434,
+     "fno_head": 0.0306,
+     "fno_flux": 0.0259
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9266,
+      "t_q05_arrived": 0.6746,
+      "t_q95_arrived": 1.3756,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0469,
+      "y_exit_q95": 0.9579,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 13,
+       "stalled": 28
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 0.9988,
+      "t_median_arrived": 0.9758,
+      "t_q05_arrived": 0.7018,
+      "t_q95_arrived": 1.3393,
+      "median_ratio_arrived_vs_ref": 1.0531,
+      "y_exit_q05": 0.0423,
+      "y_exit_q95": 0.9502,
+      "tmax": 50.0
+     }
+    }
+   },
+   "320": {
+    "flux_err": {
+     "unet": 1.1054,
+     "fno_head": 0.6853,
+     "fno_flux": 0.2692
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0348,
+     "fno_head": 0.0522,
+     "fno_flux": 0.0462
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.8616,
+      "t_q05_arrived": 0.7184,
+      "t_q95_arrived": 1.9693,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0581,
+      "y_exit_q95": 0.9612,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 8,
+       "stalled": 33
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 22,
+      "fates": {
+       "arrived": 22,
+       "backwashed": 1,
+       "stalled": 18
+      },
+      "n_paired_arrived": 22,
+      "median_paired_ratio": 2.4172,
+      "t_median_arrived": 2.0352,
+      "t_q05_arrived": 1.5252,
+      "t_q95_arrived": 6.5444,
+      "median_ratio_arrived_vs_ref": 2.3622,
+      "y_exit_q05": 0.3203,
+      "y_exit_q95": 0.3203,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 19,
+      "fates": {
+       "arrived": 19,
+       "backwashed": 22
+      },
+      "n_paired_arrived": 19,
+      "median_paired_ratio": 1.0814,
+      "t_median_arrived": 0.8799,
+      "t_q05_arrived": 0.7442,
+      "t_q95_arrived": 1.6337,
+      "median_ratio_arrived_vs_ref": 1.0213,
+      "y_exit_q05": 0.0421,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "328": {
+    "flux_err": {
+     "unet": 1.1433,
+     "fno_head": 1.1516,
+     "fno_flux": 0.44
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0553,
+     "fno_head": 0.0529,
+     "fno_flux": 0.0507
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 1.0079,
+      "t_q05_arrived": 0.5936,
+      "t_q95_arrived": 1.6662,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0867,
+      "y_exit_q95": 0.8954,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 3,
+       "stalled": 38
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0388,
+      "t_median_arrived": 0.9922,
+      "t_q05_arrived": 0.5971,
+      "t_q95_arrived": 1.7254,
+      "median_ratio_arrived_vs_ref": 0.9844,
+      "y_exit_q05": 0.1256,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "336": {
+    "flux_err": {
+     "unet": 1.1469,
+     "fno_head": 1.1417,
+     "fno_flux": 0.3673
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.0565,
+     "fno_head": 0.0364,
+     "fno_flux": 0.0306
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.8946,
+      "t_q05_arrived": 0.7066,
+      "t_q95_arrived": 1.9507,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0339,
+      "y_exit_q95": 0.9831,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 3,
+       "stalled": 38
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 40,
+      "fates": {
+       "arrived": 40,
+       "stalled": 1
+      },
+      "n_paired_arrived": 40,
+      "median_paired_ratio": 0.9868,
+      "t_median_arrived": 0.931,
+      "t_q05_arrived": 0.6961,
+      "t_q95_arrived": 1.6197,
+      "median_ratio_arrived_vs_ref": 1.0407,
+      "y_exit_q05": 0.1202,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   },
+   "344": {
+    "flux_err": {
+     "unet": 1.2726,
+     "fno_head": 0.8727,
+     "fno_flux": 0.3331
+    },
+    "head_err": {
+     "solver": 0.0,
+     "unet": 0.046,
+     "fno_head": 0.0365,
+     "fno_flux": 0.0351
+    },
+    "travel": {
+     "solver": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0,
+      "t_median_arrived": 0.9388,
+      "t_q05_arrived": 0.5969,
+      "t_q95_arrived": 1.3164,
+      "median_ratio_arrived_vs_ref": 1.0,
+      "y_exit_q05": 0.0598,
+      "y_exit_q95": 0.9229,
+      "tmax": 50.0
+     },
+     "unet": {
+      "arrived": 0,
+      "fates": {
+       "backwashed": 11,
+       "stalled": 30
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_head": {
+      "arrived": 0,
+      "fates": {
+       "stalled": 41
+      },
+      "n_paired_arrived": 0,
+      "median_paired_ratio": null,
+      "t_median_arrived": null,
+      "t_q05_arrived": null,
+      "t_q95_arrived": null,
+      "median_ratio_arrived_vs_ref": null,
+      "y_exit_q05": null,
+      "y_exit_q95": null,
+      "tmax": 50.0
+     },
+     "fno_flux": {
+      "arrived": 41,
+      "fates": {
+       "arrived": 41
+      },
+      "n_paired_arrived": 41,
+      "median_paired_ratio": 1.0323,
+      "t_median_arrived": 0.8913,
+      "t_q05_arrived": 0.6287,
+      "t_q95_arrived": 1.3958,
+      "median_ratio_arrived_vs_ref": 0.9495,
+      "y_exit_q05": 0.0254,
+      "y_exit_q95": 1.0,
+      "tmax": 50.0
+     }
+    }
+   }
+  }
+ },
+ "note": "arrival times in pore-volume units (phi=1); TPFA face fluxes reconstructed from each head field -- local balance is not guaranteed for surrogate predictions"
+}

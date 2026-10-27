@@ -1,0 +1,1 @@
+{"model": "pinn", "inst": 295, "sigma2": 1.0, "lam": 0.12, "n": 128, "params": 12737, "head_err": 0.14615169167518616, "flux_err": 0.4325099289417267, "spec_slope_h": 2.5286832787453783, "adam_seconds": 657.4, "lbfgs_seconds": 38.6, "cfg": {"width": 64, "depth": 4, "m_colloc": 16384, "m_bc": 1024, "adam_iters": 10000, "lr": 0.001, "lbfgs_iters": 500, "seed": 0}}

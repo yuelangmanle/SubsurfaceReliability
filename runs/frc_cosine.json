@@ -1,0 +1,9 @@
+{
+ "within_mean": 0.07538993306280602,
+ "within_std": 0.25350688433323215,
+ "across_mean": 0.03810798022009078,
+ "across_std": 0.2563852155316146,
+ "n_within": 42,
+ "n_across": 21,
+ "note": "cosine similarity of unit-norm U-Net head-error fields; pairwise cosine similarity across held-out realizations"
+}
