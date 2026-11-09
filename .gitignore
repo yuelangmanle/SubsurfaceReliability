@@ -14,8 +14,6 @@ env/
 
 # Large binary data and checkpoints (archived separately via build_archive_bundle.py)
 data/*.h5
-runs/**/*.pt
-runs/**/*.pth
 runs/**/*.running
 runs/**/*.log
 *.tmp
