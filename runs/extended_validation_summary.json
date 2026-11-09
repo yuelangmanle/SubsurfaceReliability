@@ -515,6 +515,87 @@
     "median_eq_face_after_amg": 0.1148,
     "relative_reduction_pct": 90.3
    }
+  },
+  "real_256_neural_amg_control": {
+   "n_grid": 256,
+   "n_evaluations": 54,
+   "eta_f_roc_auc": 1.0,
+   "eta_f_roc_auc_95ci": [
+    1.0,
+    1.0
+   ],
+   "eta_f_spearman_rho": 0.9551,
+   "pooled_median_eq_face_before_amg": 2.0429,
+   "pooled_median_eq_face_after_amg": 0.2348,
+   "relative_reduction_pct": 88.5,
+   "models": {
+    "unet": {
+     "median_eh_pre": 0.0697,
+     "median_eh_post": 0.014,
+     "median_eq_face_pre": 5.8424,
+     "median_eq_face_post": 0.3667
+    },
+    "fno_head": {
+     "median_eh_pre": 0.0449,
+     "median_eh_post": 0.0097,
+     "median_eq_face_pre": 1.7309,
+     "median_eq_face_post": 0.2617
+    },
+    "fno_flux": {
+     "median_eh_pre": 0.0468,
+     "median_eh_post": 0.0091,
+     "median_eq_face_pre": 0.7173,
+     "median_eq_face_post": 0.134
+    }
+   },
+   "timings_sec": {
+    "median_direct_solve_256": 0.133,
+    "median_neural_forward_256": 0.033,
+    "median_amg_setup_256": 0.0429,
+    "median_amg_vcycle_256": 0.004,
+    "median_total_hybrid_256": 0.08,
+    "speedup_standalone_fno_vs_direct_256": 4.0,
+    "speedup_hybrid_vs_direct_256": 1.66,
+    "speedup_reused_hierarchy_vs_direct_256": 3.6
+   }
+  },
+  "made_alluvial_aquifer_control": {
+   "target_sigma2": 4.5,
+   "n_realizations": 16,
+   "n_evaluations": 48,
+   "mean_R_grad_Y": 6061.2,
+   "eta_f_roc_auc": 0.9912,
+   "eta_f_roc_auc_95ci": [
+    0.9676,
+    1.0
+   ],
+   "eta_f_spearman_rho": 0.9663,
+   "models": {
+    "unet": {
+     "median_eh": 0.1933,
+     "median_eq_cc": 1.9318,
+     "median_eq_face": 3.3368,
+     "median_eq_face_after_1cycle_amg": 0.2051,
+     "pollock_arrival_pct_pre": 0.0,
+     "pollock_arrival_pct_after_1cycle_amg": 85.7
+    },
+    "fno_head": {
+     "median_eh": 0.1728,
+     "median_eq_cc": 1.7532,
+     "median_eq_face": 1.7625,
+     "median_eq_face_after_1cycle_amg": 0.2003,
+     "pollock_arrival_pct_pre": 2.1,
+     "pollock_arrival_pct_after_1cycle_amg": 85.4
+    },
+    "fno_flux": {
+     "median_eh": 0.2059,
+     "median_eq_cc": 0.7479,
+     "median_eq_face": 0.7352,
+     "median_eq_face_after_1cycle_amg": 0.1385,
+     "pollock_arrival_pct_pre": 26.2,
+     "pollock_arrival_pct_after_1cycle_amg": 89.3
+    }
+   }
   }
  }
 }

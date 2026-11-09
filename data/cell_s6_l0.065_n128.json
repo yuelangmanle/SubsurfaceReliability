@@ -1,0 +1,9 @@
+{
+ "sigma2": 6.0,
+ "lam": 0.065,
+ "n": 128,
+ "cov": "gauss",
+ "total": 352,
+ "gen_seconds": 9.28,
+ "path": "cell_s6_l0.065_n128.h5"
+}

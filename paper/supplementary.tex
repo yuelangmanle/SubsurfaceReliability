@@ -1,0 +1,112 @@
+\documentclass[preprint,12pt,authoryear]{elsarticle}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9.0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-0.5in}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black,
+  pdftitle={Supplementary Material: Flux blindness in neural solvers for heterogeneous subsurface flow},
+  pdfauthor={Zijie Deng, Zhenyu Liao, Jiyang Yu},
+  pdfsubject={Computers & Geosciences Supplementary Material}
+}
+
+\journal{Computers \& Geosciences (Supplementary Material)}
+
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+\emergencystretch=2.0em
+
+\begin{frontmatter}
+\title{Supplementary Material for: Flux blindness in neural solvers for heterogeneous subsurface flow: Spectral mechanisms, pre-training screening, and flux-informed learning}
+\author[1]{Zijie Deng\corref{cor1}\fnref{fn1}}
+\ead{3335196397vip@gmail.com}
+\cortext[cor1]{Corresponding author.}
+\fntext[fn1]{ORCID: 0009-0002-4824-9764.}
+\author[2]{Zhenyu Liao}
+\ead{2187996607@qq.com}
+\author[1]{Jiyang Yu}
+\ead{3488784697@qq.com}
+\affiliation[1]{organization={Jiangxi Provincial Key Laboratory of Water Resources Allocation and Efficient Utilization, Jiangxi University of Water Resources and Electric Power}, addressline={No. 289 Tianxiang Avenue}, city={Nanchang}, postcode={330099}, country={China}}
+\affiliation[2]{organization={School of Geography and Environment, Jiangxi Normal University}, addressline={No. 99 Ziyang Avenue}, city={Nanchang}, postcode={330022}, country={China}}
+\end{frontmatter}
+
+\section{Reference Solver Verification and Spatial Grid Adequacy (128x128 vs.\ 256x256)}
+\label{sec:s1}
+
+Prior to generating the 24-regime benchmark archive, the two-point flux approximation (TPFA) finite-volume reference solver (\texttt{src/subrel/solver.py}) passed four automated verification gates (\texttt{src/subrel/verify.py}):
+\begin{enumerate}
+  \item \textbf{Method of Manufactured Solutions (MMS):} Using smooth analytical conductivity and head fields across grids $N \in \{16, 32, 64, 128\}$, the solver achieved empirical convergence orders of $2.00$ in relative $L_2$ head error ($1.64 \times 10^{-3}$ at $N=16$ down to $2.57 \times 10^{-5}$ at $N=128$) and $1.98$ in interior relative $L_2$ Darcy-flux error ($3.07 \times 10^{-3}$ down to $4.98 \times 10^{-5}$).
+  \item \textbf{Homogeneous Linearity:} For uniform $K(\mathbf{x}) \equiv 1$, the solver recovered the exact linear ramp $h_0(x) = 1 - x$ with maximum pointwise error $8.77 \times 10^{-15}$ and mean interior horizontal flux $\langle q_x \rangle = 1.000000$.
+  \item \textbf{Local Discrete Conservation:} Across heterogeneous realizations, interior cell-level discrete divergence satisfied $\max_{i,j} |\nabla_h \cdot \mathbf{F}_{i,j}| = 8.63 \times 10^{-12}$.
+  \item \textbf{Grid-Refinement Sensitivity ($128^2$ vs.\ $256^2$):} Linearly interpolating individual $\ln K$ realizations onto a $256 \times 256$ grid, re-solving the TPFA system, and restricting fine face fluxes back to the $128 \times 128$ interfaces yielded relative face-flux differences of only $0.03\%$ at $(\sigma^2, \lambda) = (0.5, 0.20)$, $1.3\%$ at $(1.0, 0.03)$, $6.1\%$ at $(4.0, 0.02)$, and $9.2\%$ for the rough Mat\'{e}rn $\nu = 1/2$ field at $(2.0, 0.03)$---an order of magnitude smaller than the neural surrogate flux errors ($E_q = 1.44$--$26.34$). Similarly, in Pollock streamline particle tracking, solving on $256 \times 256$ preserved $100\%$ reference particle arrival and shifted median travel time by only $1.45\%$; quadrupling injection density from $41$ to $161$ particles shifted fate percentages by $< 2$ percentage points.
+\end{enumerate}
+
+\section{Vector-Norm Sensitivity and White-Noise Divergence Calibration}
+\label{sec:s2}
+
+In the primary benchmark archive, the interior relative $L_2$ Darcy-flux error aggregates the two velocity components via the component-norm sum $E_q = (\|\delta q_x\|_2 + \|\delta q_y\|_2) / (\|q_x\|_2 + \|q_y\|_2)$. To verify invariance to vector-norm choice, all $3{,}264$ test predictions were re-evaluated under the joint Euclidean vector norm:
+\begin{equation}
+  E_{q,\text{eucl}} = \frac{\sqrt{\|\delta q_x\|_{2,\Omega_{\text{int}}}^2 + \|\delta q_y\|_{2,\Omega_{\text{int}}}^2}}{\sqrt{\|q_x\|_{2,\Omega_{\text{int}}}^2 + \|q_y\|_{2,\Omega_{\text{int}}}^2}},
+\end{equation}
+reproducing archived values to within $3.43 \times 10^{-4}$ (\texttt{src/subrel/recompute\_dual.py}). Replacing $E_q$ with $E_{q,\text{eucl}}$ changes binary failure labels ($> 1.0$) on only $5.2\%$ of amortized evaluations ($160 / 3{,}072$ instances: $79$ U-Net and $81$ FNO), corresponding to overall failure rates of $86.3\%$ versus $91.4\%$ for U-Net and $70.0\%$ versus $75.3\%$ for FNO, while the joint conservative face-flux norm changes only $6.9\%$ ($224 / 3{,}264$). All pre-training roughness screening rules remain identical.
+
+In synthetic white-noise calibration experiments on the reference head field $h_{\text{ref}}$, the dimensionless local divergence imbalance $\mathcal{I}_{\text{div}}$ scales linearly with uncorrelated cell-to-cell head-noise amplitude, taking values of $1.83$ at $1\%$ relative head noise, $9.16$ at $5\%$ noise, and $18.66$ at $10\%$ noise. Thus, U-Net's 24-regime median $\mathcal{I}_{\text{div}} = 8.27$ corresponds to approximately $4.5\%$ uncorrelated cell-to-cell head jitter.
+
+\section{Capacity Ablations, Multi-Seed Reproducibility, and Prospective Blind Regimes}
+\label{sec:s3}
+
+To decouple parameter count and spectral mode cutoff from loss-function alignment, we performed three controlled ablations across $(\sigma^2, \lambda) \in \{(0.5, 0.20), (1.0, 0.05), (2.0, 0.03)\}$:
+\begin{enumerate}
+  \item \textbf{FNO Spectral Mode Expansion ($m \in \{12, 24, 32\}$):} Under head-only MSE training ($\alpha = 0$), increasing FNO retained modes from $m = 12$ to $m = 32$ reduces median $E_q$ from $0.70$ to $0.48$ ($-31\%$) at $(0.5, 0.20)$, from $1.44$ to $1.18$ ($-18\%$) at $(1.0, 0.05)$, and from $4.21$ to $3.60$ ($-14\%$) at $(2.0, 0.03)$, leaving the binary regime failure boundary unchanged.
+  \item \textbf{Matched-Capacity Parameter Controls:} Tripling U-Net parameters to match FNO ($263{,}689 \to 730{,}041$ at width $w = 40$) reduces U-Net median $E_q$ by $4.5\%$--$16.0\%$, whereas halving FNO parameter elements to match U-Net ($669{,}377 \to 262{,}397$ at width $w = 15$) increases FNO median $E_q$ by $38\%$--$64\%$ while preserving each family's governing roughness invariant.
+  \item \textbf{Multi-Seed Reproducibility ($4$ Random Seeds):} Across four independent random initialization seeds ($27$ additional training runs) on $(0.5, 0.20)$, $(1.0, 0.05)$, and $(2.0, 0.03)$ for U-Net ($\alpha = 0$), head-only FNO ($\alpha = 0$), and flux-weighted FNO ($\alpha = 0.01$), binary regime classifications are $100\%$ reproducible in $9/9$ FNO configurations and $8/9$ U-Net configurations (the sole threshold-straddling case being U-Net at $(0.5, 0.20)$, where seed medians are $0.84, 1.14, 0.94, 1.05$). At $(2.0, 0.03)$, Flux-FNO ($\alpha = 0.01$) achieves $E_q \in [1.41, 1.45]$ across all four seeds versus $[3.67, 4.21]$ for head-only FNO.
+\end{enumerate}
+
+Table~\ref{tab:s1_blind} reports the complete regime-by-regime results across all 12 prospective off-grid blind validation regimes (Blind Batch~1 and Blind Batch~2).
+
+\begin{table}[h!]
+\centering
+\caption{Complete regime-level results across all 12 prospective off-grid blind validation regimes ($64$ test realizations per regime). Thresholds ($\sigma^2/\lambda \ge 3.33$ for U-Net; $\sigma^2 \ge 0.75$ for FNO) were frozen on the 24-regime atlas prior to generating or training these regimes.}
+\label{tab:s1_blind}
+\footnotesize
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Off-Grid Regime $(\sigma^2, \lambda)$} & \textbf{Batch} & \textbf{$\sigma^2/\lambda$} & \textbf{U-Net Rule} & \textbf{U-Net $E_q$} & \textbf{$\sigma^2$} & \textbf{FNO Rule} & \textbf{FNO $E_q$} \\
+\midrule
+$(0.75, 0.26)$ Smooth extrap. & Batch 1 & $2.88$ & Pass ($\le 1$) & $0.89$ (Pass) & $0.75$ & Flag ($\ge 0.75$) & $0.71$ (Pass) \\
+$(0.75, 0.16)$ Interp.        & Batch 1 & $4.69$ & Flag ($> 1$)   & $1.18$ (Fail) & $0.75$ & Flag ($\ge 0.75$) & $0.77$ (Pass) \\
+$(0.75, 0.04)$ Interp.        & Batch 1 & $18.75$ & Flag ($> 1$)  & $1.98$ (Fail) & $0.75$ & Flag ($\ge 0.75$) & $1.04$ (Fail) \\
+$(1.50, 0.09)$ Interp.        & Batch 1 & $16.67$ & Flag ($> 1$)  & $2.52$ (Fail) & $1.50$ & Flag ($\ge 0.75$) & $1.57$ (Fail) \\
+$(1.50, 0.025)$ Interp.       & Batch 1 & $60.00$ & Flag ($> 1$)  & $4.20$ (Fail) & $1.50$ & Flag ($\ge 0.75$) & $2.83$ (Fail) \\
+$(3.00, 0.16)$ Interp.        & Batch 1 & $18.75$ & Flag ($> 1$)  & $5.92$ (Fail) & $3.00$ & Flag ($\ge 0.75$) & $3.54$ (Fail) \\
+$(3.00, 0.065)$ Interp.       & Batch 1 & $46.15$ & Flag ($> 1$)  & $10.02$ (Fail) & $3.00$ & Flag ($\ge 0.75$) & $5.69$ (Fail) \\
+$(6.00, 0.065)$ Rough extrap. & Batch 1 & $92.31$ & Flag ($> 1$)  & $82.31$ (Fail) & $6.00$ & Flag ($\ge 0.75$) & $57.58$ (Fail) \\
+$(0.50, 0.10)$ Transition     & Batch 2 & $5.00$  & Flag ($> 1$)  & $1.01$ (Fail) & $0.50$ & Pass ($< 0.75$)   & $0.73$ (Pass) \\
+$(0.75, 0.20)$ Transition     & Batch 2 & $3.75$  & Flag ($> 1$)  & $1.03$ (Fail) & $0.75$ & Flag ($\ge 0.75$) & $0.86$ (Pass) \\
+$(0.75, 0.12)$ Transition     & Batch 2 & $6.25$  & Flag ($> 1$)  & $1.29$ (Fail) & $0.75$ & Flag ($\ge 0.75$) & $0.79$ (Pass) \\
+$(1.00, 0.16)$ Transition     & Batch 2 & $6.25$  & Flag ($> 1$)  & $1.59$ (Fail) & $1.00$ & Flag ($\ge 0.75$) & $1.11$ (Fail) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Head-Error Spatial Phase-Locking and Empirical Covariance Orthogonality}
+\label{sec:s4}
+
+In discrete operator form, $\delta\mathbf{q} = -B_K \delta\mathbf{h}$. Across 42 within-regime realization pairs and 21 cross-regime pairs, normalized head-error fields $\delta\mathbf{h}/\|\delta\mathbf{h}\|_2$ exhibit mean cosine similarities of $0.075 \pm 0.254$ and $0.038 \pm 0.256$, respectively, because pointwise head errors phase-lock to the specific high-$\nabla Y$ interfaces of each realization. Consequently, replacing realization-specific error phases with a fixed empirical training covariance matrix $C_m = \mathbb{E}[\delta\mathbf{h}\,\delta\mathbf{h}^\top]$ inside $\operatorname{tr}(B_K C_m B_K^\top)$ yields low Spearman rank correlation with actual flux amplification ($\rho = 0.12$ for U-Net, $0.20$ for FNO, and $-0.20$ for PINN). Similarly, the high-wavenumber spectral energy fraction of the reference head field $h$ is non-predictive (instance-level ROC-AUC $0.39$--$0.58$) because flow channeling smooths head fluctuations in high-variance media, confirming that pre-training screening must use medium-side roughness invariants of $K(\mathbf{x})$.
+
+\end{document}

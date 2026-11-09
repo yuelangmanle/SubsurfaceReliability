@@ -1,0 +1,8 @@
+{
+ "sigma2": 0.5,
+ "lam": 0.08,
+ "n": 128,
+ "total": 352,
+ "gen_seconds": 28.64,
+ "path": "cell_s0.5_l0.08_n128.h5"
+}

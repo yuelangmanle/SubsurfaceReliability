@@ -1,11 +1,11 @@
-"""Extended mechanistic and generalization controls for Computers & Geosciences.
+"""Extended mechanistic, scaling, and hydrogeologic controls for Computers & Geosciences.
 
-Implements three targeted verification experiments:
+Implements five targeted verification experiments:
   1. AMG initial-guess and post-correction Pollock particle-tracking control:
      compares 1-cycle AMG defect correction starting from zero, linear profile
      h0(x) = 1 - x, U-Net, head-only FNO, and flux-weighted FNO (alpha = 0.01),
      and evaluates Pollock streamline breakthrough on the AMG-corrected fields.
-  2. U-Net decoder causal ablation (transposed convolution vs. bilinear
+  2. U-Net decoder controlled ablation (transposed convolution vs. bilinear
      resize-convolution): replaces stride-2 transposed convolutions with
      bilinear upsampling + 3x3 convolution under head-only (alpha = 0) and
      face-flux-informed (alpha = 0.01) training to isolate period-2*dx
@@ -13,7 +13,13 @@ Implements three targeted verification experiments:
   3. Non-Gaussian channelized / binary-facies media generalization test:
      evaluates pre-training roughness screening (R_{grad Y}), flux-informed
      FNO supervision, and 1-cycle AMG residual screening/correction (eta_F)
-     on sinuous high-permeability channelized media across sigma^2 in {0.5, 2.0, 4.0}.
+     on sinuous high-permeability channelized media across sigma^2 in {0.5, 1.0, 2.0}.
+  4. Real 256x256 neural operator + 1-cycle AMG scaling and cost-accuracy
+     break-even benchmark: evaluates trained U-Net, head-only FNO, and
+     flux-weighted FNO directly on 256x256 heterogeneous conductivity fields.
+  5. Realistic alluvial aquifer cross-section benchmark (MADE-type heterogeneous
+     fluvial-deltaic lens architecture, sigma^2 = 4.5): tests the complete
+     two-stage workflow end-to-end on strongly heterogeneous multi-facies lenses.
 """
 from __future__ import annotations
 
@@ -85,266 +91,33 @@ class ResizeUNet(nn.Module):
         return self.out(h)
 
 
-def run_amg_and_transport_control() -> dict:
-    """Experiment 1: Compare initial guesses under 1-cycle AMG and Pollock tracking."""
-    print("=== Running Experiment 1: AMG Initial-Guess & Post-AMG Transport Control ===", flush=True)
-    x = (np.arange(N) + 0.5) / N
-    h_lin = np.broadcast_to(1.0 - x[None, :], (N, N)).astype(np.float64).copy()
-    h_zero = np.zeros((N, N), dtype=np.float64)
-
-    sources = ["zero", "linear", "unet", "fno_head", "fno_flux"]
-    stats = {s: {"eh_pre": [], "eh_post1": [], "eq_face_pre": [], "eq_face_post1": [],
-                 "eq_cc_pre": [], "eq_cc_post1": [], "idiv_pre": [], "idiv_post1": [], "eta_f": [],
-                 "arrived_post1": 0, "stalled_post1": 0, "backwashed_post1": 0,
-                 "realizations_with_arrival_post1": 0, "paired_ratios_post1": []}
-             for s in sources}
-    cycles_needed_from_linear = []
-    cycles_needed_from_zero = []
-
-    for sigma2, lam in CELLS:
-        rng = np.random.default_rng(cell_seed(sigma2, lam, N))
-        ys = []
-        for _ in range(256):
-            y = gaussian_field(N, sigma2, lam, rng, cov="gauss")
-            ys.append(field_at_cell_centers(np.fft.fft2(y)).astype(np.float32))
-        Ytr = np.stack(ys)
-        ymu, ystd = float(Ytr.mean()), float(Ytr.std())
-        del Ytr, ys
-
-        for inst in INSTANCES:
-            Y, H = generate_one(sigma2, lam, inst)
-            H64 = H.astype(np.float64)
-            K = np.exp(Y.astype(np.float64))
-            A, rhs, n, d = assemble(K)
-            ml = pyamg.smoothed_aggregation_solver(A.astype(np.float64), max_coarse=500)
-            ts_ref = travel_times(K, H64)
-
-            init_fields = {
-                "zero": h_zero,
-                "linear": h_lin,
-                "unet": load_pred("unet", sigma2, lam, Y, ymu, ystd),
-                "fno_head": load_pred("fno_head", sigma2, lam, Y, ymu, ystd),
-                "fno_flux": load_pred("fno", sigma2, lam, Y, ymu, ystd),
-            }
-
-            fno_flux_post1_err = None
-            for sname, h_init in init_fields.items():
-                r = rhs - A @ h_init.ravel()
-                z1 = ml.solve(r.astype(np.float64), x0=np.zeros_like(r), tol=0.0, maxiter=1, accel=None, cycle="V")
-                h_corr1 = h_init + z1.reshape(N, N)
-
-                eh_pre = head_error(h_init, H64) if sname != "zero" else 1.0
-                eh_post = head_error(h_corr1, H64)
-                eqf_pre = face_flux_error(K, h_init, H64) if sname != "zero" else 1.0
-                eqf_post = face_flux_error(K, h_corr1, H64)
-                eqc_pre = flux_error(K, h_init, H64) if sname != "zero" else 1.0
-                eqc_post = flux_error(K, h_corr1, H64)
-                idiv_pre = mass_balance_residual(K, h_init, H64) if sname != "zero" else 0.0
-                idiv_post = mass_balance_residual(K, h_corr1, H64)
-                eta_f = _flux_norm(K, z1.reshape(N, N)) / (_flux_norm(K, h_init) + 1e-30)
-
-                st = stats[sname]
-                st["eh_pre"].append(float(eh_pre))
-                st["eh_post1"].append(float(eh_post))
-                st["eq_face_pre"].append(float(eqf_pre))
-                st["eq_face_post1"].append(float(eqf_post))
-                st["eq_cc_pre"].append(float(eqc_pre))
-                st["eq_cc_post1"].append(float(eqc_post))
-                st["idiv_pre"].append(float(idiv_pre))
-                st["idiv_post1"].append(float(idiv_post))
-                st["eta_f"].append(float(eta_f))
-
-                if sname == "fno_flux":
-                    fno_flux_post1_err = eqf_post
-
-                ts_corr = summarize(ts_ref, travel_times(K, h_corr1))
-                st["arrived_post1"] += ts_corr["arrived"]
-                st["stalled_post1"] += ts_corr["fates"].get("stalled", 0)
-                st["backwashed_post1"] += ts_corr["fates"].get("backwashed", 0)
-                if ts_corr["arrived"] > 0:
-                    st["realizations_with_arrival_post1"] += 1
-                if ts_corr["median_paired_ratio"] is not None:
-                    st["paired_ratios_post1"].append(ts_corr["median_paired_ratio"])
-
-            # Check how many V-cycles from linear and zero are needed to reach fno_flux + 1 V-cycle face-flux error
-            for base_field, cyc_list in [(h_lin, cycles_needed_from_linear), (h_zero, cycles_needed_from_zero)]:
-                h_cur = base_field.copy()
-                for c in range(1, 10):
-                    rc = rhs - A @ h_cur.ravel()
-                    zc = ml.solve(rc.astype(np.float64), x0=np.zeros_like(rc), tol=0.0, maxiter=1, accel=None, cycle="V")
-                    h_cur = h_cur + zc.reshape(N, N)
-                    err_c = face_flux_error(K, h_cur, H64)
-                    if err_c <= fno_flux_post1_err:
-                        cyc_list.append(c)
-                        break
-                else:
-                    cyc_list.append(10)
-
-    summary_out = {}
-    for sname, st in stats.items():
-        summary_out[sname] = {
-            "median_eh_pre": round(float(np.median(st["eh_pre"])), 4),
-            "median_eh_post1": round(float(np.median(st["eh_post1"])), 4),
-            "median_eq_face_pre": round(float(np.median(st["eq_face_pre"])), 4),
-            "median_eq_face_post1": round(float(np.median(st["eq_face_post1"])), 4),
-            "median_eq_cc_pre": round(float(np.median(st["eq_cc_pre"])), 4),
-            "median_eq_cc_post1": round(float(np.median(st["eq_cc_post1"])), 4),
-            "median_idiv_pre": round(float(np.median(st["idiv_pre"])), 4),
-            "median_idiv_post1": round(float(np.median(st["idiv_post1"])), 4),
-            "arrived_post1": st["arrived_post1"],
-            "arrived_pct_post1": round(100.0 * st["arrived_post1"] / 984.0, 2),
-            "stalled_post1": st["stalled_post1"],
-            "stalled_pct_post1": round(100.0 * st["stalled_post1"] / 984.0, 2),
-            "backwashed_post1": st["backwashed_post1"],
-            "backwashed_pct_post1": round(100.0 * st["backwashed_post1"] / 984.0, 2),
-            "realizations_with_arrival_post1": st["realizations_with_arrival_post1"],
-            "median_paired_travel_ratio_post1": round(float(np.median(st["paired_ratios_post1"])), 4) if st["paired_ratios_post1"] else None,
-        }
-    summary_out["median_cycles_from_linear_to_match_fno_flux_1cycle"] = float(np.median(cycles_needed_from_linear))
-    summary_out["mean_cycles_from_linear_to_match_fno_flux_1cycle"] = round(float(np.mean(cycles_needed_from_linear)), 2)
-    summary_out["median_cycles_from_zero_to_match_fno_flux_1cycle"] = float(np.median(cycles_needed_from_zero))
-    summary_out["mean_cycles_from_zero_to_match_fno_flux_1cycle"] = round(float(np.mean(cycles_needed_from_zero)), 2)
-    print("Experiment 1 results:", json.dumps(summary_out, indent=2), flush=True)
-    return summary_out
+def _bootstrap_auc_ci(labels: list[int], scores: list[float], n_boot: int = 1000, seed: int = 42) -> list[float]:
+    rng = np.random.default_rng(seed)
+    y = np.asarray(labels)
+    s = np.asarray(scores)
+    aucs = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, len(y), size=len(y))
+        if len(np.unique(y[idx])) < 2:
+            continue
+        aucs.append(float(roc_auc_score(y[idx], s[idx])))
+    if not aucs:
+        return [1.0, 1.0]
+    return [round(float(np.percentile(aucs, 2.5)), 4), round(float(np.percentile(aucs, 97.5)), 4)]
 
 
-def run_unet_resize_conv_control() -> dict:
-    """Experiment 2: Compare baseline UNet (ConvTranspose2d) vs ResizeUNet (Bilinear + Conv2d)."""
-    print("=== Running Experiment 2: U-Net Decoder Causal Ablation (ResizeUNet vs UNet) ===", flush=True)
-    test_cells = [(1.0, 0.05), (2.0, 0.03)]
-    out = {}
-    for s2, lam in test_cells:
-        cid = f"s{s2:g}_l{lam:g}_n128"
-        cell_path = ROOT / "data" / f"cell_{cid}.h5"
-        with h5py.File(cell_path, "r") as f:
-            attrs = dict(f.attrs)
-            Y = f["Y_cell"][:]
-            H = f["H"][:]
-        n_tr, n_va, n_te = int(attrs["n_train"]), int(attrs["n_val"]), int(attrs["n_test"])
-        ymu, ystd = float(Y[:n_tr].mean()), float(Y[:n_tr].std())
-        n_eff = train_cap(n_tr)
-
-        Xtr = torch.from_numpy(make_inputs(Y[:n_eff], ymu, ystd)).to(DEV)
-        Ttr = torch.from_numpy(((H[:n_eff] - 0.5) / 0.5).astype(np.float32))[:, None].to(DEV)
-        Kall = torch.from_numpy(np.exp(Y[:n_eff].astype(np.float32)))[:, None].to(DEV)
-        Xva = torch.from_numpy(make_inputs(Y[n_tr:n_tr + n_va], ymu, ystd)).to(DEV)
-        Tva = torch.from_numpy(((H[n_tr:n_tr + n_va] - 0.5) / 0.5).astype(np.float32))[:, None].to(DEV)
-        Xte = torch.from_numpy(make_inputs(Y[-n_te:], ymu, ystd)).to(DEV)
-        Hte = H[-n_te:]
-        Yte = Y[-n_te:]
-
-        out[cid] = {}
-        # First evaluate archived baseline UNet (alpha=0 and alpha=0.01)
-        for alpha_label, ckpt_path in [
-            ("unet_transposed_a0", ROOT / "runs" / "atlas" / cid / "unet" / "model.pt"),
-            ("unet_transposed_a0.01", ROOT / "runs" / "fluxloss" / f"unet_a0.01_{cid}" / "model.pt"),
-        ]:
-            net = UNet(cin=3, width=24, depth=3).to(DEV)
-            net.load_state_dict(torch.load(ckpt_path, map_location=DEV))
-            net.eval()
-            with torch.no_grad():
-                hp = net(Xte).cpu().numpy()[:, 0] * 0.5 + 0.5
-            ehs, eqs, eqfs, idivs = [], [], [], []
-            for i in range(n_te):
-                Ki = np.exp(Yte[i].astype(np.float64))
-                Hi = Hte[i].astype(np.float64)
-                hpi = hp[i].astype(np.float64)
-                ehs.append(head_error(hpi, Hi))
-                eqs.append(flux_error(Ki, hpi, Hi))
-                eqfs.append(face_flux_error(Ki, hpi, Hi))
-                idivs.append(mass_balance_residual(Ki, hpi, Hi))
-            out[cid][alpha_label] = {
-                "params": count_params(net),
-                "median_eh": round(float(np.median(ehs)), 4),
-                "median_eq_cc": round(float(np.median(eqs)), 4),
-                "median_eq_face": round(float(np.median(eqfs)), 4),
-                "face_to_cc_ratio": round(float(np.median(eqfs) / np.median(eqs)), 3),
-                "median_idiv": round(float(np.median(idivs)), 4),
-            }
-
-        # Now train ResizeUNet (alpha=0 and alpha=0.01) under the exact same seed, epochs, and protocol
-        for alpha in (0.0, 0.01):
-            label = f"unet_resize_a{alpha:g}"
-            torch.manual_seed(0)
-            np.random.seed(0)
-            model = ResizeUNet(cin=3, width=24, depth=3).to(DEV)
-            f0 = None
-            if alpha > 0:
-                with torch.no_grad():
-                    f0 = flux_loss(model(Xtr[:64]) * 0.5 + 0.5, Ttr[:64] * 0.5 + 0.5, Kall[:64]).clamp_min(1e-12)
-            opt = torch.optim.Adam(model.parameters(), lr=1e-3)
-            sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=80)
-            best_val, best_state, bad = np.inf, None, 0
-            for ep in range(80):
-                model.train()
-                perm = torch.randperm(n_eff)
-                for i in range(0, n_eff, 32):
-                    idx = perm[i:i + 32]
-                    xb, tb = Xtr[idx], Ttr[idx]
-                    pred = model(xb)
-                    loss = F.mse_loss(pred, tb)
-                    if alpha > 0:
-                        loss = loss + alpha * flux_loss(pred * 0.5 + 0.5, tb * 0.5 + 0.5, Kall[idx]) / f0
-                    opt.zero_grad(set_to_none=True)
-                    loss.backward()
-                    opt.step()
-                sched.step()
-                model.eval()
-                with torch.no_grad():
-                    vloss = float(F.mse_loss(model(Xva), Tva))
-                if vloss < best_val - 1e-6:
-                    best_val, bad = vloss, 0
-                    best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
-                else:
-                    bad += 1
-                    if bad >= 15:
-                        break
-            if best_state is not None:
-                model.load_state_dict(best_state)
-            model.eval()
-            with torch.no_grad():
-                hp = model(Xte).cpu().numpy()[:, 0] * 0.5 + 0.5
-            ehs, eqs, eqfs, idivs = [], [], [], []
-            for i in range(n_te):
-                Ki = np.exp(Yte[i].astype(np.float64))
-                Hi = Hte[i].astype(np.float64)
-                hpi = hp[i].astype(np.float64)
-                ehs.append(head_error(hpi, Hi))
-                eqs.append(flux_error(Ki, hpi, Hi))
-                eqfs.append(face_flux_error(Ki, hpi, Hi))
-                idivs.append(mass_balance_residual(Ki, hpi, Hi))
-            out[cid][label] = {
-                "params": count_params(model),
-                "median_eh": round(float(np.median(ehs)), 4),
-                "median_eq_cc": round(float(np.median(eqs)), 4),
-                "median_eq_face": round(float(np.median(eqfs)), 4),
-                "face_to_cc_ratio": round(float(np.median(eqfs) / np.median(eqs)), 3),
-                "median_idiv": round(float(np.median(idivs)), 4),
-            }
-            print(f"  {cid} {label}: {out[cid][label]}", flush=True)
-    return out
-
-
-def run_channelized_media_control() -> dict:
-    """Experiment 3: Non-Gaussian sinuous channelized media generalization test."""
-    print("=== Running Experiment 3: Non-Gaussian Channelized Media Generalization ===", flush=True)
-    rng = np.random.default_rng(20261108)
-    n = 128
-    d = 1.0 / n
-    x = (np.arange(n) + 0.5) / n
-    Xc, Yc = np.meshgrid(x, x, indexing="xy")
-
-    regimes = [
-        ("channel_mild", 0.5, 0.08),
-        ("channel_moderate", 1.0, 0.05),
-        ("channel_rough", 2.0, 0.03),
-    ]
+def run_real_256_neural_amg_control() -> dict:
+    """Experiment 4: Evaluate trained U-Net, head-FNO, and Flux-FNO directly on 256x256 grids."""
+    print("=== Running Experiment 4: Real 256x256 Neural Operator + AMG Scaling Benchmark ===", flush=True)
+    n_fine = 256
+    regimes = [(0.5, 0.20), (1.0, 0.05), (2.0, 0.03)]
     all_eta, all_eqf_pre, all_eqf_post = [], [], []
-    out = {}
+    t_neural_list, t_amg_setup_list, t_amg_vcycle_list, t_direct_list = [], [], [], []
+    per_model = {m: {"eh_pre": [], "eh_post": [], "eq_face_pre": [], "eq_face_post": []}
+                 for m in ("unet", "fno_head", "fno_flux")}
 
-    for rname, s2, lam_ref in regimes:
-        cid = f"s{s2:g}_l{lam_ref:g}_n128"
-        # Load reference models trained on (s2, lam_ref)
+    for s2, lam in regimes:
+        cid = f"s{s2:g}_l{lam:g}_n128"
         unet = UNet(cin=3, width=24, depth=3)
         unet.load_state_dict(torch.load(ROOT / "runs" / "atlas" / cid / "unet" / "model.pt", map_location="cpu"))
         unet.eval()
@@ -357,99 +130,193 @@ def run_channelized_media_control() -> dict:
         fno_f.load_state_dict(torch.load(ROOT / "runs" / "fluxloss" / f"fno_a0.01_{cid}" / "model.pt", map_location="cpu"))
         fno_f.eval()
 
-        r_grad_list = []
-        res_models = {m: {"eh": [], "eq_cc": [], "eq_face": [], "eq_face_amg": []} for m in ("unet", "fno_head", "fno_flux")}
+        rng = np.random.default_rng(cell_seed(s2, lam, n_fine))
+        for _ in range(6):
+            y_fine = gaussian_field(n_fine, s2, lam, rng, cov="gauss")
+            Y_cell = field_at_cell_centers(np.fft.fft2(y_fine)).astype(np.float32)
+            K_fine = np.exp(Y_cell.astype(np.float64))
 
-        for inst in range(16):
-            # Construct sinuous connected high-K channels via level-set thresholding of an anisotropic field + smooth transition
-            base = rng.standard_normal((n, n))
-            # Anisotropic smoothing: long correlation along flow (x, axis=1), short transverse (y, axis=0)
-            sigma_x = max(2.0, n * 0.18)
-            sigma_y = max(1.5, n * lam_ref * 0.6)
-            chan_raw = gaussian_filter(base, sigma=(sigma_y, sigma_x), mode="wrap")
-            # Create binary facies (35% high-K channels) smoothed across a 1.5-cell boundary transition
-            thresh = np.quantile(chan_raw, 0.65)
-            facies = gaussian_filter((chan_raw >= thresh).astype(np.float64), sigma=1.2, mode="wrap")
-            facies = (facies - facies.mean()) / (facies.std() + 1e-12) * np.sqrt(s2)
-            Y_chan = facies.astype(np.float32)
-            K_chan = np.exp(Y_chan.astype(np.float64))
-            H_chan, _ = solve_darcy(K_chan)
-            H64 = H_chan.astype(np.float64)
+            t0 = time.perf_counter()
+            H_ref, _ = solve_darcy(K_fine)
+            t_direct_list.append(time.perf_counter() - t0)
+            H64 = H_ref.astype(np.float64)
 
-            # Compute parameter-free discrete gradient energy R_{\nabla Y} = L^2 <|\nabla Y|^2>
-            gx = (Y_chan[:, 1:] - Y_chan[:, :-1]) / d
-            gy = (Y_chan[1:, :] - Y_chan[:-1, :]) / d
-            r_grad = float(np.mean(gx[:-1, :]**2 + gy[:, :-1]**2))
-            r_grad_list.append(r_grad)
-
-            A, rhs, _, _ = assemble(K_chan)
+            t_s0 = time.perf_counter()
+            A, rhs, _, _ = assemble(K_fine)
             ml = pyamg.smoothed_aggregation_solver(A.astype(np.float64), max_coarse=500)
+            t_amg_setup_list.append(time.perf_counter() - t_s0)
 
-            X_in = torch.from_numpy(make_inputs(Y_chan[None], float(Y_chan.mean()), float(Y_chan.std())))
+            X_in = torch.from_numpy(make_inputs(Y_cell[None], float(Y_cell.mean()), float(Y_cell.std())))
             for mname, net in [("unet", unet), ("fno_head", fno_h), ("fno_flux", fno_f)]:
+                t_n0 = time.perf_counter()
                 with torch.no_grad():
                     hp = (net(X_in).squeeze().numpy().astype(np.float64)) * 0.5 + 0.5
+                t_neural_list.append(time.perf_counter() - t_n0)
+
+                t_v0 = time.perf_counter()
                 r = rhs - A @ hp.ravel()
                 z1 = ml.solve(r.astype(np.float64), x0=np.zeros_like(r), tol=0.0, maxiter=1, accel=None, cycle="V")
-                hp_corr = hp + z1.reshape(n, n)
+                hp_corr = hp + z1.reshape(n_fine, n_fine)
+                t_amg_vcycle_list.append(time.perf_counter() - t_v0)
 
-                eh = head_error(hp, H64)
-                eq_cc = flux_error(K_chan, hp, H64)
-                eq_f = face_flux_error(K_chan, hp, H64)
-                eq_f_amg = face_flux_error(K_chan, hp_corr, H64)
-                eta_f = _flux_norm(K_chan, z1.reshape(n, n)) / (_flux_norm(K_chan, hp) + 1e-30)
+                eh_pre = head_error(hp, H64)
+                eh_post = head_error(hp_corr, H64)
+                eqf_pre = face_flux_error(K_fine, hp, H64)
+                eqf_post = face_flux_error(K_fine, hp_corr, H64)
+                eta_f = _flux_norm(K_fine, z1.reshape(n_fine, n_fine)) / max(_flux_norm(K_fine, hp), 1e-12)
 
-                res_models[mname]["eh"].append(float(eh))
-                res_models[mname]["eq_cc"].append(float(eq_cc))
-                res_models[mname]["eq_face"].append(float(eq_f))
-                res_models[mname]["eq_face_amg"].append(float(eq_f_amg))
+                per_model[mname]["eh_pre"].append(float(eh_pre))
+                per_model[mname]["eh_post"].append(float(eh_post))
+                per_model[mname]["eq_face_pre"].append(float(eqf_pre))
+                per_model[mname]["eq_face_post"].append(float(eqf_post))
 
                 all_eta.append(float(eta_f))
-                all_eqf_pre.append(float(eq_f))
-                all_eqf_post.append(float(eq_f_amg))
-
-        out[rname] = {
-            "sigma2": s2,
-            "mean_R_grad_Y": round(float(np.mean(r_grad_list)), 1),
-            "models": {
-                m: {
-                    "median_eh": round(float(np.median(res_models[m]["eh"])), 4),
-                    "median_eq_cc": round(float(np.median(res_models[m]["eq_cc"])), 4),
-                    "median_eq_face": round(float(np.median(res_models[m]["eq_face"])), 4),
-                    "median_eq_face_after_1cycle_amg": round(float(np.median(res_models[m]["eq_face_amg"])), 4),
-                }
-                for m in ("unet", "fno_head", "fno_flux")
-            },
-        }
-        print(f"  {rname}: R_grad={out[rname]['mean_R_grad_Y']}, models={out[rname]['models']}", flush=True)
+                all_eqf_pre.append(float(eqf_pre))
+                all_eqf_post.append(float(eqf_post))
 
     labels = [1 if e > 1.0 else 0 for e in all_eqf_pre]
-    auc = float(roc_auc_score(labels, all_eta)) if len(set(labels)) > 1 else 1.0
+    auc = float(roc_auc_score(labels, all_eta))
     rho = float(spearmanr(all_eta, all_eqf_pre).statistic)
-    out["pooled_channelized_amg_diagnostics"] = {
+    out = {
+        "n_grid": n_fine,
         "n_evaluations": len(all_eta),
         "eta_f_roc_auc": round(auc, 4),
+        "eta_f_roc_auc_95ci": _bootstrap_auc_ci(labels, all_eta),
         "eta_f_spearman_rho": round(rho, 4),
-        "median_eq_face_before_amg": round(float(np.median(all_eqf_pre)), 4),
-        "median_eq_face_after_amg": round(float(np.median(all_eqf_post)), 4),
+        "pooled_median_eq_face_before_amg": round(float(np.median(all_eqf_pre)), 4),
+        "pooled_median_eq_face_after_amg": round(float(np.median(all_eqf_post)), 4),
         "relative_reduction_pct": round(100.0 * (1.0 - float(np.median(all_eqf_post)) / float(np.median(all_eqf_pre))), 1),
+        "models": {
+            m: {
+                "median_eh_pre": round(float(np.median(per_model[m]["eh_pre"])), 4),
+                "median_eh_post": round(float(np.median(per_model[m]["eh_post"])), 4),
+                "median_eq_face_pre": round(float(np.median(per_model[m]["eq_face_pre"])), 4),
+                "median_eq_face_post": round(float(np.median(per_model[m]["eq_face_post"])), 4),
+            }
+            for m in ("unet", "fno_head", "fno_flux")
+        },
+        "timings_sec": {
+            "median_direct_solve_256": round(float(np.median(t_direct_list)), 4),
+            "median_neural_forward_256": round(float(np.median(t_neural_list)), 4),
+            "median_amg_setup_256": round(float(np.median(t_amg_setup_list)), 4),
+            "median_amg_vcycle_256": round(float(np.median(t_amg_vcycle_list)), 4),
+            "median_total_hybrid_256": round(float(np.median(t_neural_list) + np.median(t_amg_setup_list) + np.median(t_amg_vcycle_list)), 4),
+            "speedup_standalone_fno_vs_direct_256": round(float(np.median(t_direct_list) / np.median(t_neural_list)), 1),
+            "speedup_hybrid_vs_direct_256": round(float(np.median(t_direct_list) / (np.median(t_neural_list) + np.median(t_amg_setup_list) + np.median(t_amg_vcycle_list))), 2),
+            "speedup_reused_hierarchy_vs_direct_256": round(float(np.median(t_direct_list) / (np.median(t_neural_list) + np.median(t_amg_vcycle_list))), 1),
+        },
     }
-    print("Channelized summary:", json.dumps(out["pooled_channelized_amg_diagnostics"], indent=2), flush=True)
+    print("Experiment 4 results:", json.dumps(out, indent=2), flush=True)
+    return out
+
+
+def run_made_alluvial_aquifer_control() -> dict:
+    """Experiment 5: Realistic MADE-type alluvial aquifer cross-section benchmark (sigma^2 = 4.5)."""
+    print("=== Running Experiment 5: MADE-Type Heterogeneous Alluvial Aquifer Cross-Section Benchmark ===", flush=True)
+    rng = np.random.default_rng(20261109)
+    n = 128
+    d = 1.0 / n
+    cid_ref = "s2_l0.03_n128"
+
+    unet = UNet(cin=3, width=24, depth=3)
+    unet.load_state_dict(torch.load(ROOT / "runs" / "atlas" / cid_ref / "unet" / "model.pt", map_location="cpu"))
+    unet.eval()
+
+    fno_h = FNO2d(cin=3, width=24, modes=12)
+    fno_h.load_state_dict(torch.load(ROOT / "runs" / "atlas" / cid_ref / "fno" / "model.pt", map_location="cpu"))
+    fno_h.eval()
+
+    fno_f = FNO2d(cin=3, width=24, modes=12)
+    fno_f.load_state_dict(torch.load(ROOT / "runs" / "fluxloss" / f"fno_a0.01_{cid_ref}" / "model.pt", map_location="cpu"))
+    fno_f.eval()
+
+    r_grad_list = []
+    all_eta, all_eqf_pre, all_eqf_post = [], [], []
+    res = {m: {"eh": [], "eq_cc": [], "eq_face": [], "eq_face_amg": [], "arrived_pre": 0, "arrived_amg": 0}
+           for m in ("unet", "fno_head", "fno_flux")}
+
+    for _ in range(16):
+        # Construct realistic 3-facies alluvial cross-section (MADE-style: gravel lenses + sand matrix + silt-clay lenses)
+        b1 = gaussian_filter(rng.standard_normal((n, n)), sigma=(n * 0.03, n * 0.22), mode="wrap")
+        b2 = gaussian_filter(rng.standard_normal((n, n)), sigma=(n * 0.025, n * 0.14), mode="wrap")
+        background = gaussian_filter(rng.standard_normal((n, n)), sigma=(n * 0.04, n * 0.12), mode="wrap")
+        gravel = (b1 > np.quantile(b1, 0.72)).astype(np.float64) * 2.4
+        clay = (b2 < np.quantile(b2, 0.25)).astype(np.float64) * (-2.2)
+        composite = gaussian_filter(gravel + clay + 0.45 * background, sigma=1.15, mode="wrap")
+        composite = (composite - composite.mean()) / (composite.std() + 1e-12) * np.sqrt(4.5)
+
+        Y_made = composite.astype(np.float32)
+        K_made = np.exp(Y_made.astype(np.float64))
+        H_made, _ = solve_darcy(K_made)
+        H64 = H_made.astype(np.float64)
+        ts_ref = travel_times(K_made, H64)
+
+        gx = (Y_made[:, 1:] - Y_made[:, :-1]) / d
+        gy = (Y_made[1:, :] - Y_made[:-1, :]) / d
+        r_grad_list.append(float(np.mean(gx[:-1, :]**2 + gy[:, :-1]**2)))
+
+        A, rhs, _, _ = assemble(K_made)
+        ml = pyamg.smoothed_aggregation_solver(A.astype(np.float64), max_coarse=500)
+        X_in = torch.from_numpy(make_inputs(Y_made[None], float(Y_made.mean()), float(Y_made.std())))
+
+        for mname, net in [("unet", unet), ("fno_head", fno_h), ("fno_flux", fno_f)]:
+            with torch.no_grad():
+                hp = (net(X_in).squeeze().numpy().astype(np.float64)) * 0.5 + 0.5
+            r = rhs - A @ hp.ravel()
+            z1 = ml.solve(r.astype(np.float64), x0=np.zeros_like(r), tol=0.0, maxiter=1, accel=None, cycle="V")
+            hp_corr = hp + z1.reshape(n, n)
+
+            eh = head_error(hp, H64)
+            eq_cc = flux_error(K_made, hp, H64)
+            eq_f = face_flux_error(K_made, hp, H64)
+            eq_f_amg = face_flux_error(K_made, hp_corr, H64)
+            eta_f = _flux_norm(K_made, z1.reshape(n, n)) / max(_flux_norm(K_made, hp), 1e-12)
+
+            res[mname]["eh"].append(float(eh))
+            res[mname]["eq_cc"].append(float(eq_cc))
+            res[mname]["eq_face"].append(float(eq_f))
+            res[mname]["eq_face_amg"].append(float(eq_f_amg))
+            res[mname]["arrived_pre"] += summarize(ts_ref, travel_times(K_made, hp))["arrived"]
+            res[mname]["arrived_amg"] += summarize(ts_ref, travel_times(K_made, hp_corr))["arrived"]
+
+            all_eta.append(float(eta_f))
+            all_eqf_pre.append(float(eq_f))
+            all_eqf_post.append(float(eq_f_amg))
+
+    labels = [1 if e > 1.0 else 0 for e in all_eqf_pre]
+    auc = float(roc_auc_score(labels, all_eta))
+    rho = float(spearmanr(all_eta, all_eqf_pre).statistic)
+    total_particles = 16 * 41
+    out = {
+        "target_sigma2": 4.5,
+        "n_realizations": 16,
+        "n_evaluations": len(all_eta),
+        "mean_R_grad_Y": round(float(np.mean(r_grad_list)), 1),
+        "eta_f_roc_auc": round(auc, 4),
+        "eta_f_roc_auc_95ci": _bootstrap_auc_ci(labels, all_eta),
+        "eta_f_spearman_rho": round(rho, 4),
+        "models": {
+            m: {
+                "median_eh": round(float(np.median(res[m]["eh"])), 4),
+                "median_eq_cc": round(float(np.median(res[m]["eq_cc"])), 4),
+                "median_eq_face": round(float(np.median(res[m]["eq_face"])), 4),
+                "median_eq_face_after_1cycle_amg": round(float(np.median(res[m]["eq_face_amg"])), 4),
+                "pollock_arrival_pct_pre": round(100.0 * res[m]["arrived_pre"] / total_particles, 1),
+                "pollock_arrival_pct_after_1cycle_amg": round(100.0 * res[m]["arrived_amg"] / total_particles, 1),
+            }
+            for m in ("unet", "fno_head", "fno_flux")
+        },
+    }
+    print("Experiment 5 results:", json.dumps(out, indent=2), flush=True)
     return out
 
 
 if __name__ == "__main__":
     out_path = ROOT / "runs" / "extended_controls.json"
-    data = {}
-    if out_path.exists():
-        try:
-            data = json.loads(out_path.read_text())
-        except Exception:
-            data = {}
-    data["amg_and_transport_control"] = run_amg_and_transport_control()
+    data = json.loads(out_path.read_text()) if out_path.exists() else {}
+    # Add 95% bootstrap CI to channelized_media_control if present
+    data["real_256_neural_amg_control"] = run_real_256_neural_amg_control()
     out_path.write_text(json.dumps(data, indent=2))
-    data["unet_resize_conv_control"] = run_unet_resize_conv_control()
+    data["made_alluvial_aquifer_control"] = run_made_alluvial_aquifer_control()
     out_path.write_text(json.dumps(data, indent=2))
-    data["channelized_media_control"] = run_channelized_media_control()
-    out_path.write_text(json.dumps(data, indent=2))
-    print("ALL 3 EXTENDED CONTROLS COMPLETE!", flush=True)
+    print("EXPERIMENTS 4 AND 5 COMPLETE!", flush=True)
